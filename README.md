@@ -1,68 +1,34 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# Introduction
 
-## Available Scripts
+A login/Signup system with facebook web client SDK and manual signup with `https://reqres.in`
 
-In the project directory, you can run:
+# Steps for Execution
+   1. run `git clone git@github.com:samridhharshit/Bobble_login.git`
+   2. cd `Bobble_login`
+   3. run `npm install`
+   4. run `npm start`
+   
+   - Now you are good to go!
+   
+   
+# Program Usage 
+ 
+- For login using facebook account click on *""* button, then in the popup window provide following credentials:
+    - Email: learnauthfb@gmail.com Password: learningauth (Due to developer account limitation only provided email ids can be used)
+- For manual signup (not using FB login), you can use one of the following email ids as reqres.in only support limited user registeration
+    - george.bluth@reqres.in
+    - janet.weaver@reqres.in
+    - emma.wong@reqres.in
+    - eve.holt@reqres.in
+    - charles.morris@reqres.in
+    - tracey.ramos@reqres.in
+    
+# Architecture
 
-### `npm start`
+It a login/Signup System that would enable the user to signup or login either with facebook or manually by providing the user data as required. 
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+In case of Facebook signup/login, when the user clicks on the **continue with facebook icon**, the user gets redirected to the facebook login page where they are provided to login with facebook. facebook logs in the user and creates a token and sends it back as a response which is used to determine wheather the user has logged in or not.
+If the user successfully logs in, the app receives the user data along with the status. This disables the `submit` button at the bottom notifying that the user has logged in.
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
-
-### `npm test`
-
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
-
-### Analyzing the Bundle Size
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
-
-### Making a Progressive Web App
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
-
-### Advanced Configuration
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
-
-### Deployment
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-### `npm run build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+In case of manual signup, the user data is used to signup with `https://reqres.in` by calling the `/api/register` route .
+it returns the user data consisting of id and token. Similarly, if the user has registered then, the submit button gets disabled and a **Logged in...** status starts showing instead. 
