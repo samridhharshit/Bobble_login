@@ -74,8 +74,6 @@ export default function Form(props: any) {
         }
     }
 
-    const handleFacebookLogin = () => {}
-
 
     const handleGoogleLogin = () => {
         return (
@@ -148,11 +146,15 @@ export default function Form(props: any) {
                             appId={"764901230958591"}
                             autoLoad={false}
                             fields={"name, picture"}
-                            onClick={handleFacebookLogin}
+                            onClick={() => {
+                                console.log('login with facebook')}
+                            }
                             callback={responseFacebook}
                         >
                             <Button
-                                onClick={handleFacebookLogin}
+                                onClick={() => {
+                                    console.log('login with facebook')}
+                                }
                                 className={classes.button}
                                 variant="outlined"
                             >
