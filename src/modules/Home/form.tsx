@@ -64,6 +64,7 @@ export default function Form(props: any) {
     const [name, setName] = useState<string>('')
     const [pic, setPic] = useState<string>('')
     const [user, setUser] = useState<boolean>(false)
+    const [id, setId] = useState<any>(-1)
 
     const responseFacebook = async (res: any) => {
         console.log(res)
@@ -107,6 +108,7 @@ export default function Form(props: any) {
                 .then(function (response) {
                     if (response.data.token) {
                         setUser(true)
+                        setId(response.data.id)
                     }
                     console.log(response)
                     console.log(JSON.stringify(response.data));
@@ -211,7 +213,7 @@ export default function Form(props: any) {
                     </Typography>
                     <br/>
                     {
-                        (auth || user) ? (
+                        auth ? (
                             <Button
                                 onClick={handleManualLogin}
                                 className={classes.submitButton}
@@ -220,6 +222,15 @@ export default function Form(props: any) {
                                 disabled={true}
                             >
                                 { `${name} LOGGED IN...` }
+                            </Button>
+                        ) : user ? (
+                            <Button
+                                type={'submit'}
+                                className={classes.submitButton}
+                                variant="contained"
+                                color="primary"
+                            >
+                                {`user with ${id} is logged in`}
                             </Button>
                         ) : (
                             <Button
