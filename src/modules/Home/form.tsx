@@ -1,6 +1,8 @@
 import {Button, Grid, Paper, TextField, Typography} from "@material-ui/core";
 import React, { useEffect, useState } from 'react'
 import {createStyles, makeStyles, Theme} from "@material-ui/core/styles";
+import FacebookLogin from 'react-facebook-login'
+import {Redirect} from 'react-router-dom'
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -55,20 +57,41 @@ const useStyles = makeStyles((theme: Theme) =>
     }),
 );
 
-export default function Form() {
+export default function Form(props: any) {
     const classes = useStyles()
+    const [auth, setAuth] = useState<boolean>(false)
+    const [name, setName] = useState<string>('')
+    const [pic, setPic] = useState<string>('')
+
+    const responseFacebook = async (res: any) => {
+        console.log(res)
+        if (res.status !== 'unknown') {
+            await setAuth(true)
+            await setName(res.name)
+            await setPic(res.picture.data.url)
+        }
+    }
 
     const handleFacebookLogin = () => {
-        alert('facebook login handled')
+
     }
 
     const handleGoogleLogin = () => {
-        alert('google login handled')
+        return (
+            <Redirect to={'/flogin'} />
+        )
     }
 
     const handleManualLogin = () => {
-        alert('manual login')
+        return (
+            <Redirect to={'/flogin'} />
+        )
     }
+    //
+    // const handleLogout = () => {
+    //     alert('logout')
+    //     setUser(false)
+    // }
 
     return (
         <div className={classes.root}>
@@ -94,18 +117,26 @@ export default function Form() {
                         </Button>
                     </Grid>
                     <Grid className={classes.gridCenter} lg={6} item xs={12}>
-                        <Button
+                        <FacebookLogin
+                            appId={"764901230958591"}
+                            autoLoad={true}
+                            fields={"name, picture"}
                             onClick={handleFacebookLogin}
-                            className={classes.button}
-                            variant="outlined"
+                            callback={responseFacebook}
                         >
-                            <img
-                                className={classes.img}
-                                src="https://f0.pngfuel.com/png/497/515/facebook-scalable-graphics-icon-facebook-logo-facebook-logo-png-clip-art.png"
-                                alt="facebook"
-                            />
-                            Continue with Facebook
-                        </Button>
+                            <Button
+                                onClick={handleFacebookLogin}
+                                className={classes.button}
+                                variant="outlined"
+                            >
+                                <img
+                                    className={classes.img}
+                                    src="https://f0.pngfuel.com/png/497/515/facebook-scalable-graphics-icon-facebook-logo-facebook-logo-png-clip-art.png"
+                                    alt="facebook"
+                                />
+                                Continue with Facebook
+                            </Button>
+                        </FacebookLogin>
                     </Grid>
                 </Grid>
                 <br/>
@@ -147,14 +178,28 @@ export default function Form() {
                         By clicking up, you agree to our terms and conditions
                     </Typography>
                     <br/>
-                    <Button
-                        onClick={handleManualLogin}
-                        className={classes.submitButton}
-                        variant="contained"
-                        color="primary"
-                    >
-                        SIGN UP
-                    </Button>
+                    {
+                        auth === true ? (
+                            <Button
+                                onClick={handleManualLogin}
+                                className={classes.submitButton}
+                                variant="contained"
+                                color="primary"
+                                disabled={true}
+                            >
+                                { `${name} is logged in...` }
+                            </Button>
+                        ) : (
+                            <Button
+                                onClick={handleManualLogin}
+                                className={classes.submitButton}
+                                variant="contained"
+                                color="primary"
+                            >
+                                SIGN UP
+                            </Button>
+                        )
+                    }
                 </form>
             </div>
         </div>
