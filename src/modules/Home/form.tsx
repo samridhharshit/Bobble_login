@@ -1,8 +1,9 @@
 import {Button, Grid, Paper, TextField, Typography} from "@material-ui/core";
-import React, { useEffect, useState } from 'react'
+import React, {useCallback, useEffect, useState} from 'react'
 import {createStyles, makeStyles, Theme} from "@material-ui/core/styles";
 import FacebookLogin from 'react-facebook-login'
 import {Redirect} from 'react-router-dom'
+import axios from 'axios'
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -62,6 +63,7 @@ export default function Form(props: any) {
     const [auth, setAuth] = useState<boolean>(false)
     const [name, setName] = useState<string>('')
     const [pic, setPic] = useState<string>('')
+    const [user, setUser] = useState<boolean>(false)
 
     const responseFacebook = async (res: any) => {
         console.log(res)
@@ -72,9 +74,8 @@ export default function Form(props: any) {
         }
     }
 
-    const handleFacebookLogin = () => {
+    const handleFacebookLogin = () => {}
 
-    }
 
     const handleGoogleLogin = () => {
         return (
@@ -82,16 +83,42 @@ export default function Form(props: any) {
         )
     }
 
-    const handleManualLogin = () => {
-        return (
-            <Redirect to={'/flogin'} />
-        )
-    }
-    //
-    // const handleLogout = () => {
-    //     alert('logout')
-    //     setUser(false)
-    // }
+    const handleManualLogin = useCallback(
+        async e => {
+            e.preventDefault()
+            const { email, password, fname, lname  } = e.target.elements
+            console.log(email.value, password.value, fname.value, lname.value)
+
+            let data = {
+                email: email.value,
+                first_name: fname.value,
+                last_name: lname.value,
+                password: password.value
+            }
+
+            // let config = {
+            //     method: 'post',
+            //     url: 'https://reqres.in/api/register',
+            //     headers: {
+            //         'Content-Type': 'application/json'
+            //     },
+            //     data : data
+            // };
+
+            axios.post('https://reqres.in/api/register', data )
+                .then(function (response) {
+                    if (response.data.token) {
+                        setUser(true)
+                    }
+                    console.log(response)
+                    console.log(JSON.stringify(response.data));
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+
+        }, []
+    )
 
     return (
         <div className={classes.root}>
@@ -119,7 +146,7 @@ export default function Form(props: any) {
                     <Grid className={classes.gridCenter} lg={6} item xs={12}>
                         <FacebookLogin
                             appId={"764901230958591"}
-                            autoLoad={true}
+                            autoLoad={false}
                             fields={"name, picture"}
                             onClick={handleFacebookLogin}
                             callback={responseFacebook}
@@ -146,32 +173,35 @@ export default function Form(props: any) {
                     className={classes.form}
                     noValidate={true}
                     autoComplete={'off'}
-                    action="/"
+                    onSubmit={handleManualLogin}
                 >
                     <TextField
                         required
                         id="first_name"
                         label="First Name"
                         variant="outlined"
+                        name="fname"
                     />
                     <TextField
                         required
                         id="last_name"
                         label="Last Name"
                         variant="outlined"
+                        name="lname"
                     />
                     <TextField
                         required
                         id="email"
                         label="email"
-                        defaultValue="Your email"
                         variant="outlined"
+                        name="email"
                     />
                     <TextField
                         id="password"
                         label="Password"
                         type="password"
                         variant="outlined"
+                        name="password"
                     />
                     <br/>
                     <Typography variant="subtitle2" color="textSecondary" gutterBottom={true}>
@@ -179,7 +209,7 @@ export default function Form(props: any) {
                     </Typography>
                     <br/>
                     {
-                        auth === true ? (
+                        (auth || user) ? (
                             <Button
                                 onClick={handleManualLogin}
                                 className={classes.submitButton}
@@ -187,11 +217,11 @@ export default function Form(props: any) {
                                 color="primary"
                                 disabled={true}
                             >
-                                { `${name} is logged in...` }
+                                { `${name} LOGGED IN...` }
                             </Button>
                         ) : (
                             <Button
-                                onClick={handleManualLogin}
+                                type={'submit'}
                                 className={classes.submitButton}
                                 variant="contained"
                                 color="primary"
