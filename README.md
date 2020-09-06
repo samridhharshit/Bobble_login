@@ -1,7 +1,7 @@
 # Introduction
 
 A login/Signup system with facebook web client SDK and manual signup with `https://reqres.in`
-Deployment link to the application `http://ec2-52-14-23-94.us-east-2.compute.amazonaws.com:3000/#/`
+Deployment link to the application `https://ec2-52-14-23-94.us-east-2.compute.amazonaws.com:3000/#/`
 
 # Steps for Execution
    1. run `git clone git@github.com:samridhharshit/Bobble_login.git`
